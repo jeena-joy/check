@@ -1,0 +1,22 @@
+version: 0.2
+phases:
+  install:
+    commands:
+       - apt install -y git python3
+       - curl -o aws-iam-authenticator https://amazon-eks.s3.us-west-2.amazonaws.com/1.17.9/2020-08-04/bin/linux/amd64/aws-iam-authenticatorr -o /usr/local/bin/aws-iam-authenticator && chmod +x /usr/local/bin/aws-iam-authenticator
+       - wget https://get.helm.sh/helm-v3.8.2-linux-amd64.tar.gz
+       - tar -zxvf helm-v3.8.2-linux-amd64.tar.gz
+       - sudo mv linux-amd64/helm /usr/local/bin/helm
+       - curl -LO "https://storage.googleapis.com/kubernetes-release/release/v1.23.0/bin/linux/amd64/kubectl"
+       - chmod +x ./kubectl
+       - mv ./kubectl /usr/local/bin/kubectl
+  pre_build:
+    commands:
+       - IMAGE_REPO_NAME=$AWS_ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPOSITORY_NAME
+       - echo ${IMAGE_REPO_NAME}
+       - echo Logging in to Amazon ECR...######
+       - aws eks --region $AWS_REGION update-kubeconfig --name ${CLUSTER_NAME}
+       - cat ~/.kube/config
+       - aws sts get-caller-identity
+       - kubectl get nodes
+       - $(aws ecr get-login --region $REGION --no-include-email)

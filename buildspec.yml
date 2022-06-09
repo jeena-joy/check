@@ -2,7 +2,7 @@ version: 0.2
 phases:
   install:
     commands:
-       - apt install -y git python3
+       - yum install -y git python3
        - curl -o aws-iam-authenticator https://amazon-eks.s3.us-west-2.amazonaws.com/1.17.9/2020-08-04/bin/linux/amd64/aws-iam-authenticatorr -o /usr/local/bin/aws-iam-authenticator && chmod +x /usr/local/bin/aws-iam-authenticator
        - wget https://get.helm.sh/helm-v3.8.2-linux-amd64.tar.gz
        - tar -zxvf helm-v3.8.2-linux-amd64.tar.gz

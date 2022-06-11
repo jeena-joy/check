@@ -19,4 +19,4 @@ phases:
        - cat ~/.kube/config
        - aws sts get-caller-identity
        - kubectl get nodes
-       - $(aws ecr get-login --region $AWS_REGION --no-include-email)
+       - $(aws ecr get-login --region $AWS_REGION)

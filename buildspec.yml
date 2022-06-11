@@ -3,8 +3,8 @@ phases:
   install:
     commands:
        - yum install -y git python3
-       - sudo rm /usr/local/bin/aws
-       - sudo rm /usr/local/bin/aws_completer
+       - sudo rm -rf /usr/local/bin/aws
+       - sudo rm -rf /usr/local/bin/aws_completer
        - sudo rm -rf /usr/local/aws-cli
        - sudo rm ~/.aws/
        - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-2.0.30.zip" -o "awscliv2.zip"

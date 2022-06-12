@@ -1,9 +1,7 @@
-FROM node:14.6
-RUN mkdir -p /usr/src/app
+FROM node:14
 WORKDIR /usr/src/app
-COPY package.json /usr/src/app/
+COPY package*.json ./
 RUN npm install
 COPY . .
-RUN npm run build
-EXPOSE 8000
-CMD [ "node", "./dist/Server.js" ]
+EXPOSE 8080
+CMD [ “node”, “server.js” ]

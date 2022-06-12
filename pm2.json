@@ -1,0 +1,10 @@
+{
+    "name": "customerservicetest",
+    "script": "dist/Server.js",
+    "instances": "2",
+    "exec_mode":"cluster",
+    "error_file": "./src/err.log",
+    "out_file": "./src/out.log",
+    "log_file": "./src/combined.log",
+    "max_memory_restart": "2048M"
+  }

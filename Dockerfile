@@ -3,7 +3,7 @@ FROM node:10.15
 WORKDIR /usr/src/app
 
 COPY package.json .
-COPY package-lock.json .
+#COPY package-lock.json .
 COPY pm2.json .
 
 RUN npm install pm2 -g

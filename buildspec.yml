@@ -12,6 +12,9 @@ phases:
        - mv ./kubectl /usr/local/bin/kubectl
   pre_build:
     commands:
+       - CODEBUILD_GIT_SHORT_COMMIT=$(bash -c "$(curl -fsSL https://raw.githubusercontent.com/thii/aws-codebuild-extras/master/install)" | grep CODEBUILD_GIT_SHORT_COMMIT | awk {'print $4'})
+       - CODEBUILD_GIT_TAG=$(bash -c "$(curl -fsSL https://raw.githubusercontent.com/thii/aws-codebuild-extras/master/install)" | grep CODEBUILD_GIT_TAG  | awk {'print $4'})
+       - CODEBUILD_PROJECT=$(bash -c "$(curl -fsSL https://raw.githubusercontent.com/thii/aws-codebuild-extras/master/install)" | grep CODEBUILD_PROJECT  | awk {'print $4'})
        - IMAGE_REPO_NAME=$AWS_ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPOSITORY_NAME
        - echo ${IMAGE_REPO_NAME}
        - echo Logging in to Amazon ECR...######
@@ -26,5 +29,10 @@ phases:
       - echo Build started on `date`
       - echo Building docker image…
       - docker build -t $REPOSITORY_URI:latest .
-      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
+      - docker tag ${IMAGE_REPO_NAME} ${IMAGE_REPO_NAME}:${CODEBUILD_GIT_TAG}
+  post_build:
+    commands:
+      - echo Pushing $REPOSITORY_NAME Docker image to ECR ${IMAGE_REPO_NAME}
+      - docker push ${IMAGE_REPO_NAME}:${CODEBUILD_GIT_TAG}
+      - echo deploying $REPOSITORY_NAME with tag ${CODEBUILD_GIT_TAG}
  

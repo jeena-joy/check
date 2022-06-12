@@ -29,10 +29,10 @@ phases:
       - echo Build started on `date`
       - echo Building docker image…
       - docker build -t $REPOSITORY_URI:latest .
-      - docker tag ${IMAGE_REPO_NAME} ${IMAGE_REPO_NAME}:${CODEBUILD_GIT_TAG}
+      - docker tag ${IMAGE_REPO_NAME} ${IMAGE_REPO_NAME}:$IMAGE_TAG
   post_build:
     commands:
       - echo Pushing $REPOSITORY_NAME Docker image to ECR ${IMAGE_REPO_NAME}
-      - docker push ${IMAGE_REPO_NAME}:${CODEBUILD_GIT_TAG}
-      - echo deploying $REPOSITORY_NAME with tag ${CODEBUILD_GIT_TAG}
+      - docker push ${IMAGE_REPO_NAME}:$IMAGE_TAG
+      - echo deploying $REPOSITORY_NAME with tag $IMAGE_TAG
  

@@ -12,6 +12,7 @@ phases:
        - mv ./kubectl /usr/local/bin/kubectl
   pre_build:
     commands:
+       - export REGION=us-east-1
        - CODEBUILD_GIT_SHORT_COMMIT=$(bash -c "$(curl -fsSL https://raw.githubusercontent.com/thii/aws-codebuild-extras/master/install)" | grep CODEBUILD_GIT_SHORT_COMMIT | awk {'print $4'})
        - CODEBUILD_GIT_TAG=$(bash -c "$(curl -fsSL https://raw.githubusercontent.com/thii/aws-codebuild-extras/master/install)" | grep CODEBUILD_GIT_TAG  | awk {'print $4'})
        - CODEBUILD_PROJECT=$(bash -c "$(curl -fsSL https://raw.githubusercontent.com/thii/aws-codebuild-extras/master/install)" | grep CODEBUILD_PROJECT  | awk {'print $4'})
@@ -22,18 +23,16 @@ phases:
        - cat ~/.kube/config
        - aws sts get-caller-identity
        - kubectl get nodes
-       - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 181908711899.dkr.ecr.us-east-1.amazonaws.com
+       #- aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 181908711899.dkr.ecr.us-east-1.amazonaws.com
        - eval $(aws ecr get-login-password --registry-ids 181908711899 --region us-east-1 --no-include-email)
   build:
     commands:
-      - echo Build started on `date`
-      - echo Building docker image…
-      - docker build -t ${IMAGE_REPO_NAME} .
-      #- docker tag ${IMAGE_REPO_NAME} $IMAGE_REPO_NAME:$IMAGE_TAG
-      - docker tag ${IMAGE_REPO_NAME} ${IMAGE_REPO_NAME}:$IMAGE_TAG
+       - echo Starting $REPOSITORY_NAME Docker build
+       - docker build -t ${IMAGE_REPO_NAME} .
+       - docker tag ${IMAGE_REPO_NAME} ${IMAGE_REPO_NAME}:${CODEBUILD_GIT_TAG}
   post_build:
     commands:
-      - echo Pushing $IMAGE_REPO_NAME Docker image to ECR ${IMAGE_REPO_NAME}
-      - docker push ${IMAGE_REPO_NAME}:$IMAGE_TAG
-      - echo deploying $IMAGE_REPO_NAME with tag $IMAGE_TAG
+       - echo Pushing $REPOSITORY_NAME Docker image to ECR ${IMAGE_REPO_NAME}
+       - docker push ${IMAGE_REPO_NAME}:${CODEBUILD_GIT_TAG}
+       - echo deploying $REPOSITORY_NAME with tag ${CODEBUILD_GIT_TAG}
  

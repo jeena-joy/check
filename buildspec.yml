@@ -23,8 +23,8 @@ phases:
        - cat ~/.kube/config
        - aws sts get-caller-identity
        - kubectl get nodes
-       #- aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 181908711899.dkr.ecr.us-east-1.amazonaws.com
-       - eval $(aws ecr get-login-password --registry-ids 181908711899 --region us-east-1 --no-include-email)
+       - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 181908711899.dkr.ecr.us-east-1.amazonaws.com
+       #- eval $(aws ecr get-login-password --registry-ids 181908711899 --region us-east-1 --no-include-email)
   build:
     commands:
        - echo Starting $REPOSITORY_NAME Docker build

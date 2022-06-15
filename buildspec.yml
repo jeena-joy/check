@@ -35,9 +35,5 @@ phases:
        - echo Pushing $REPOSITORY_NAME Docker image to ECR ${IMAGE_REPO_NAME}
        - docker push ${IMAGE_REPO_NAME}
        - echo deploying $REPOSITORY_NAME
-      # - |
-        helm upgrade -n $NAMESPACE --create-namespace --install $REPOSITORY_NAME                                               \
-        -f charts/test-values.yaml charts/ \
-        --set image.repository=$IMAGE_REPO_NAME
        - helm upgrade -n test --create-namespace --install checkcluster -f charts/test-values.yaml charts --set image.repository=181908711899.dkr.ecr.us-east-1.amazonaws.com/checkcluster:latest
  

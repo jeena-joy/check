@@ -37,6 +37,6 @@ phases:
        - echo deploying $REPOSITORY_NAME
        - |
         helm upgrade -n $NAMESPACE --create-namespace --install $REPOSITORY_NAME                                               \
-        -f charts/values-$STAGE.yaml charts/ \
+        -f charts/test-values.yaml charts/ \
         --set image.repository=$IMAGE_REPO_NAME
  
